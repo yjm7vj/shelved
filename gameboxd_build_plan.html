@@ -1,0 +1,143 @@
+
+<style>
+.phase { margin: 0 0 10px 0; }
+.phase-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--border-radius-lg); cursor: pointer; user-select: none; }
+.phase-header:hover { opacity: 0.85; }
+.phase-title { font-size: 14px; font-weight: 500; flex: 1; }
+.phase-badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+.chevron { font-size: 12px; transition: transform 0.2s; color: var(--color-text-secondary); }
+.chevron.open { transform: rotate(90deg); }
+.steps { display: none; padding: 4px 0 4px 14px; border-left: 2px solid var(--color-border-tertiary); margin: 0 0 6px 20px; }
+.steps.open { display: block; }
+.step { display: flex; gap: 10px; padding: 7px 10px; border-radius: var(--border-radius-md); margin-bottom: 3px; align-items: flex-start; }
+.step:hover { background: var(--color-background-secondary); }
+.step-num { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); min-width: 20px; padding-top: 1px; }
+.step-body { flex: 1; }
+.step-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 2px; }
+.step-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+.step-tag { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 6px; margin-top: 4px; font-weight: 500; }
+.tag-learn { background: var(--color-background-info); color: var(--color-text-info); }
+.tag-build { background: var(--color-background-success); color: var(--color-text-success); }
+.tag-deploy { background: var(--color-background-warning); color: var(--color-text-warning); }
+.progress-bar { height: 3px; border-radius: 2px; margin: 6px 0 10px 0; background: var(--color-border-tertiary); }
+.progress-fill { height: 100%; border-radius: 2px; }
+
+.p1-h { background: #EEEDFE; color: #3C3489; }
+.p1-b { background: #AFA9EC; }
+.p2-h { background: #E1F5EE; color: #085041; }
+.p2-b { background: #5DCAA5; }
+.p3-h { background: #FAECE7; color: #712B13; }
+.p3-b { background: #F0997B; }
+.p4-h { background: #EAF3DE; color: #27500A; }
+.p4-b { background: #97C459; }
+.p5-h { background: #E6F1FB; color: #0C447C; }
+.p5-b { background: #85B7EB; }
+
+@media (prefers-color-scheme: dark) {
+  .p1-h { background: #3C3489; color: #CECBF6; }
+  .p2-h { background: #085041; color: #9FE1CB; }
+  .p3-h { background: #712B13; color: #F5C4B3; }
+  .p4-h { background: #27500A; color: #C0DD97; }
+  .p5-h { background: #0C447C; color: #B5D4F4; }
+}
+</style>
+
+<div style="padding: 4px 0 12px 0;">
+  <div style="font-size:13px; color:var(--color-text-secondary); margin-bottom:14px;">Click each phase to expand the steps. Build in order — each phase assumes the previous one is done.</div>
+
+  <!-- Phase 1 -->
+  <div class="phase">
+    <div class="phase-header p1-h" onclick="toggle('p1')">
+      <span class="chevron" id="p1-chev">›</span>
+      <span class="phase-title">Phase 1 — Project setup + auth + database</span>
+      <span class="phase-badge p1-b" style="color:#26215C;">Weeks 1–3</span>
+    </div>
+    <div class="steps" id="p1">
+      <div class="step"><span class="step-num">1</span><div class="step-body"><div class="step-title">Learn Next.js 14 basics</div><div class="step-desc">Work through the official Next.js tutorial on nextjs.org. Focus on App Router, pages, and components. Skip the advanced stuff for now.</div><span class="step-tag tag-learn">learn</span></div></div>
+      <div class="step"><span class="step-num">2</span><div class="step-body"><div class="step-title">Learn TypeScript fundamentals</div><div class="step-desc">Types, interfaces, and how they layer onto JavaScript. The Total TypeScript free beginner course is great. 2–3 hours is enough to start.</div><span class="step-tag tag-learn">learn</span></div></div>
+      <div class="step"><span class="step-num">3</span><div class="step-body"><div class="step-title">Scaffold the Next.js project</div><div class="step-desc">Run <code>npx create-next-app@latest gameboxd --typescript --tailwind</code>. Push to a GitHub repo immediately. This is your home base.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">4</span><div class="step-body"><div class="step-title">Set up Supabase project</div><div class="step-desc">Create a free Supabase project at supabase.com. This gives you a managed PostgreSQL database. Copy your connection string into a .env file.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">5</span><div class="step-body"><div class="step-title">Design and create your DB schema</div><div class="step-desc">Create tables: users, games, user_games (hours + status), reviews, friendships. Use Supabase's table editor visually first, then write the SQL. This is the most important step — get it right before moving on.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">6</span><div class="step-body"><div class="step-title">Add auth with Clerk</div><div class="step-desc">Install Clerk, add email + Google login. Protect routes so only logged-in users can add games or write reviews. Connect Clerk user IDs to your users table in Supabase.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">7</span><div class="step-body"><div class="step-title">Build basic game search page</div><div class="step-desc">Hit the RAWG API to search games by name. Show cover art and title in a grid. This is your first real UI — make it look good with Tailwind + shadcn/ui components.</div><span class="step-tag tag-build">build</span></div></div>
+    </div>
+  </div>
+
+  <!-- Phase 2 -->
+  <div class="phase">
+    <div class="phase-header p2-h" onclick="toggle('p2')">
+      <span class="chevron" id="p2-chev">›</span>
+      <span class="phase-title">Phase 2 — Steam integration + background jobs</span>
+      <span class="phase-badge p2-b" style="color:#04342C;">Weeks 4–8</span>
+    </div>
+    <div class="steps" id="p2">
+      <div class="step"><span class="step-num">8</span><div class="step-body"><div class="step-title">Learn Python + FastAPI basics</div><div class="step-desc">Work through the FastAPI official tutorial (fastapi.tiangolo.com). Focus on routes, request/response models with Pydantic, and async functions. Give this a solid week.</div><span class="step-tag tag-learn">learn</span></div></div>
+      <div class="step"><span class="step-num">9</span><div class="step-body"><div class="step-title">Get a Steam Web API key</div><div class="step-desc">Register at steamcommunity.com/dev/apikey. Free and instant. Read the GetOwnedGames and GetPlayerSummaries docs so you know exactly what data you'll get back.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">10</span><div class="step-body"><div class="step-title">Build the FastAPI backend</div><div class="step-desc">Create a new repo for your Python backend. One endpoint to start: POST /sync-steam that accepts a Steam ID, calls the Steam API, and returns the game list. Test it with a public Steam profile.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">11</span><div class="step-body"><div class="step-title">Set up Upstash Redis + job queue</div><div class="step-desc">Create a free Upstash Redis instance. Use the rq or arq Python library to turn Steam syncing into a background job. Your API should return immediately and process async.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">12</span><div class="step-body"><div class="step-title">Build the Steam import UI</div><div class="step-desc">A page where users paste their Steam profile URL or ID. Show a loading state while the job runs, then redirect to their library page when done. Use Supabase realtime to detect when the sync finishes.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">13</span><div class="step-body"><div class="step-title">Build the game library page</div><div class="step-desc">Display the user's imported games with hours played, cover art from RAWG, and a status badge (playing / completed / backlog). This is your hero feature — make it look great.</div><span class="step-tag tag-build">build</span></div></div>
+    </div>
+  </div>
+
+  <!-- Phase 3 -->
+  <div class="phase">
+    <div class="phase-header p3-h" onclick="toggle('p3')">
+      <span class="chevron" id="p3-chev">›</span>
+      <span class="phase-title">Phase 3 — Reviews, ratings + social</span>
+      <span class="phase-badge p3-b" style="color:#4A1B0C;">Weeks 9–13</span>
+    </div>
+    <div class="steps" id="p3">
+      <div class="step"><span class="step-num">14</span><div class="step-body"><div class="step-title">Build game detail pages</div><div class="step-desc">Each game gets its own page: cover art, description from RAWG/IGDB, average rating, and a list of reviews from users. Use Next.js dynamic routes ([gameId]/page.tsx).</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">15</span><div class="step-body"><div class="step-title">Add reviews and star ratings</div><div class="step-desc">Users can write a review and give 1–5 stars. Store in your reviews table. Show average rating on the game page. Add a "did you play this?" check using their imported Steam library.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">16</span><div class="step-body"><div class="step-title">Build user profile pages</div><div class="step-desc">Public profile showing: avatar, bio, games played, recent reviews, stats (total hours, games completed). This is what people share. Make it look clean — this is your showpiece.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">17</span><div class="step-body"><div class="step-title">Add the friend / follow system</div><div class="step-desc">Users can follow each other. Store in a friendships table with follower_id and following_id. Show a follower count on profiles.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">18</span><div class="step-body"><div class="step-title">Build the activity feed</div><div class="step-desc">Show recent activity from people you follow: "Alex completed Elden Ring", "Sam wrote a review for Hades". Query reviews + user_games ordered by created_at for followed users.</div><span class="step-tag tag-build">build</span></div></div>
+    </div>
+  </div>
+
+  <!-- Phase 4 -->
+  <div class="phase">
+    <div class="phase-header p4-h" onclick="toggle('p4')">
+      <span class="chevron" id="p4-chev">›</span>
+      <span class="phase-title">Phase 4 — AI recommendations</span>
+      <span class="phase-badge p4-b" style="color:#173404;">Weeks 14–17</span>
+    </div>
+    <div class="steps" id="p4">
+      <div class="step"><span class="step-num">19</span><div class="step-body"><div class="step-title">Learn embeddings + vector search</div><div class="step-desc">Read the OpenAI embeddings guide and the pgvector README. The core idea: turn text into a list of numbers, then find similar ones. One afternoon of reading is enough to proceed.</div><span class="step-tag tag-learn">learn</span></div></div>
+      <div class="step"><span class="step-num">20</span><div class="step-body"><div class="step-title">Enable pgvector on Supabase</div><div class="step-desc">Run <code>create extension vector</code> in your Supabase SQL editor. Add a vector(1536) column to your games table. Supabase has a pgvector quickstart guide — follow it exactly.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">21</span><div class="step-body"><div class="step-title">Generate and store game embeddings</div><div class="step-desc">Write a Python script that takes each game's name + genres + description, calls OpenAI's text-embedding-3-small API, and stores the vector in your games table. Run it once for your game catalog.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">22</span><div class="step-body"><div class="step-title">Build the recommendation endpoint</div><div class="step-desc">In FastAPI: take a user's top played games, average their embeddings, run a pgvector nearest-neighbor search, filter out games they already own, return the top 10. That's the whole algorithm.</div><span class="step-tag tag-build">build</span></div></div>
+      <div class="step"><span class="step-num">23</span><div class="step-body"><div class="step-title">Add "recommended for you" UI</div><div class="step-desc">A section on the user's home feed showing AI-recommended games with a "because you played X" explanation. Pull the reason from whichever owned game had the closest embedding match.</div><span class="step-tag tag-build">build</span></div></div>
+    </div>
+  </div>
+
+  <!-- Phase 5 -->
+  <div class="phase">
+    <div class="phase-header p5-h" onclick="toggle('p5')">
+      <span class="chevron" id="p5-chev">›</span>
+      <span class="phase-title">Phase 5 — Deploy + cloud + polish</span>
+      <span class="phase-badge p5-b" style="color:#042C53;">Weeks 18–20</span>
+    </div>
+    <div class="steps" id="p5">
+      <div class="step"><span class="step-num">24</span><div class="step-body"><div class="step-title">Deploy frontend to Vercel</div><div class="step-desc">Connect your GitHub repo to Vercel. It auto-detects Next.js. Add your environment variables (Supabase URL, Clerk keys, etc.) in the Vercel dashboard. Your first cloud deployment — takes about 10 minutes.</div><span class="step-tag tag-deploy">deploy</span></div></div>
+      <div class="step"><span class="step-num">25</span><div class="step-body"><div class="step-title">Deploy backend to Railway</div><div class="step-desc">Connect your FastAPI repo to Railway. Add a Procfile with your start command. Add environment variables. Railway detects Python automatically. Set up a worker process for your Redis job queue.</div><span class="step-tag tag-deploy">deploy</span></div></div>
+      <div class="step"><span class="step-num">26</span><div class="step-body"><div class="step-title">Set up GitHub Actions CI/CD</div><div class="step-desc">Add a workflow that runs your tests on every push and auto-deploys to Vercel/Railway on merge to main. Even a basic pipeline here is worth listing on your resume as CI/CD experience.</div><span class="step-tag tag-deploy">deploy</span></div></div>
+      <div class="step"><span class="step-num">27</span><div class="step-body"><div class="step-title">Add monitoring with Sentry</div><div class="step-desc">Free tier Sentry catches runtime errors in both your Next.js frontend and FastAPI backend. Add it in an hour. Now you can see real errors from real users — this is what production observability looks like.</div><span class="step-tag tag-deploy">deploy</span></div></div>
+      <div class="step"><span class="step-num">28</span><div class="step-body"><div class="step-title">Get real users + collect metrics</div><div class="step-desc">Share in gaming communities, with friends, on Reddit (r/patientgamers, r/SteamDeals). Get 20–50 real users. Note your numbers: active users, Steam profiles imported, reviews written. These go on your resume.</div><span class="step-tag tag-deploy">deploy</span></div></div>
+      <div class="step"><span class="step-num">29</span><div class="step-body"><div class="step-title">Write a project README + case study</div><div class="step-desc">Document architecture decisions, what broke, what you'd do differently. This is what interviewers read. Explain why you used a job queue, why pgvector, why you split frontend and backend.</div><span class="step-tag tag-deploy">deploy</span></div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggle(id) {
+  const steps = document.getElementById(id);
+  const chev = document.getElementById(id + '-chev');
+  const isOpen = steps.classList.contains('open');
+  steps.classList.toggle('open', !isOpen);
+  chev.classList.toggle('open', !isOpen);
+}
+toggle('p1');
+</script>
