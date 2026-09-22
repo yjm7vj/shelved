@@ -1,7 +1,11 @@
-import Image from "next/image";
 import { SignIn } from "@clerk/nextjs";
 
-export default function Page() {
+export const metadata = { title: "Sign in — Shelved" };
 
-  return <SignIn />
+export default function Page() {
+  return (
+    <div className="flex justify-center py-12">
+      <SignIn />
+    </div>
+  );
 }
