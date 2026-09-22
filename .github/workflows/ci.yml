@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  frontend:
+    name: Lint, typecheck and build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: shelved
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: shelved/package-lock.json
+
+      - run: npm ci
+
+      - run: npx eslint .
+
+      - run: npx tsc --noEmit
+
+      - run: npm run build
+        env:
+          # Build-time placeholders: the real values live in the Vercel dashboard.
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_Y2xlcmsuZXhhbXBsZS5jb20k
+          CLERK_SECRET_KEY: sk_test_ci
