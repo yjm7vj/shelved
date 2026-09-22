@@ -1,26 +1,53 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Shelved is a dark-only product: cover art is the content, and a dark shell
+   keeps it that way. No light theme is defined on purpose. */
+@theme {
+  --color-canvas: #0a0b0d;
+  --color-surface: #131519;
+  --color-surface-hover: #1a1d23;
+  --color-line: #242830;
+  --color-ink: #e9e7e4;
+  --color-muted: #8b919c;
+  --color-accent: #ffb340;
+  --color-accent-ink: #1a1203;
+  --color-playing: #4ea8ff;
+  --color-completed: #4ade80;
+  --color-backlog: #a78bfa;
+  --color-dropped: #f87171;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* A faint warm glow behind the header keeps the top of every page from
+   reading as a flat black rectangle. */
+.page-glow::before {
+  content: "";
+  position: fixed;
+  inset: -20% 0 auto 0;
+  height: 420px;
+  background: radial-gradient(60% 100% at 50% 0%, rgba(255, 179, 64, 0.09), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
